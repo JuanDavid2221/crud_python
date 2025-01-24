@@ -19,6 +19,20 @@ def index():
     personas = obtener_personas()
     return render_template('index.html', personas=personas)
 
+@app.route('/inicio', methods=['GET', 'POST'])
+def inicio():
+    if request.method == 'POST':
+        usuario = request.form['usuario']
+        contraseña = request.form['contraseña']
+        if usuario == 'admin' and contraseña == '12345':  # Ejemplo de validación
+            return redirect(url_for('index'))  # Redirige a la página principal
+        else:
+            return "Usuario o contraseña incorrectos", 403  # Error si las credenciales son incorrectas
+
+    return render_template('inicio.html')  # Esto renderiza el archivo HTML de inicio
+
+
+
 @app.route('/crear', methods=['POST'])
 def crear():
     if request.method == 'POST':

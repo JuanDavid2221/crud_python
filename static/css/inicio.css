@@ -1,0 +1,113 @@
+.sidebar {
+    position: fixed; /* Menú fijo a la izquierda */
+    top: 0;
+    left: 0;
+    width: 80px; /* Ancho del sidebar */
+    height: 100vh; /* Alto del sidebar */
+    background-color: #000; /* Color de fondo */
+    box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1); /* Sombra */
+    padding-top: 50px;
+    transition: width 0.3s ease; /* Transición para el cambio de tamaño */
+}
+
+.sidebar:hover {
+    width: 200px; /* Cuando el mouse pasa, el sidebar se expande */
+    
+}
+
+/* Estilo para los enlaces */
+.sidebar nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar nav ul li {
+    text-align: center;
+    padding: 15px 0;
+    margin: 10px 0;
+}
+
+/* Estilos para los iconos */
+.sidebar nav ul li a {
+    color: white;
+    font-size: 30px; /* Iconos grandes */
+    display: block;
+    text-decoration: none;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+/* Estilos para el texto debajo de los iconos */
+.sidebar nav ul li a span {
+    font-size: 12px; /* Texto pequeño debajo del icono */
+    color: white;
+    display: block;
+    margin-top: 5px;
+    opacity: 0; /* Inicialmente el texto está oculto */
+    transition: opacity 0.3s ease;
+}
+
+/* Cuando el sidebar se expande, mostrar el texto */
+.sidebar:hover nav ul li a span {
+    opacity: 1; /* Muestra el texto cuando el sidebar está expandido */
+}
+
+/* Efecto hover en los enlaces */
+.sidebar nav ul li a:hover {
+    color: #b49cd4; /* Color de los iconos al pasar el mouse */
+    transform: scale(1.1); /* Agranda el icono al pasar el ratón */
+    width: 95%;
+}
+
+/* Estilo para el contenido principal */
+main {
+    margin-left: 80px; /* Deja espacio para el sidebar fijo */
+    padding: 20px;
+    flex: 1;
+    transition: margin-left 0.3s ease; /* Transición suave para el contenido */
+}
+
+/* Cuando el sidebar se expanda, ajustar el contenido */
+.sidebar:hover + main {
+    margin-left: 200px; /* Ajusta el margen del contenido cuando el sidebar se expanda */
+}
+
+/* Títulos y texto principal */
+h1 {
+    color: #333;
+    font-size: 36px;
+}
+
+p {
+    color: #555;
+    font-size: 18px;
+}
+/* Estilo para la sección bienvenida */
+.init {
+    width: 80%;
+    margin-left: 220px; /* Deja espacio para el sidebar fijo */
+    padding-top: 50px; /* Ajusta el espacio superior para que no se solape con el sidebar */
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+/* Contenedor del carrusel */
+.carrusel {
+    width: 700px;       /* Ancho fijo del carrusel */
+    height: 800px;      /* Alto fijo del carrusel */
+    overflow: hidden;   /* Esconde las partes que sobresalgan del contenedor */
+    display: flex;
+    align-items: center;
+}
+
+/* Asegura que las imágenes se ajusten correctamente dentro del carrusel */
+.carousel-inner img {
+    width: 100%;        /* Hace que la imagen ocupe todo el ancho del contenedor */
+    height: 100%;       /* Hace que la imagen ocupe todo el alto del contenedor */
+    object-fit: contain; /* Ajusta la imagen sin recortarla, manteniendo su proporción */
+}
+
+/* Estilo para los controles del carrusel (botones) */
+.carousel-control-prev, .carousel-control-next {
+    filter: invert(1);  /* Cambia el color de los controles a blanco */
+}

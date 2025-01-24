@@ -12,36 +12,39 @@
         <div class="wrapper">
             <!-- Sidebar Lateral Fijo -->
             <header class="sidebar">
-                <nav>
-                    <ul>
-                        <li>
-                            <a href="#">
-                                <i class="fas fa-home"></i>
-                                <span>Inicio</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fas fa-plus-circle"></i>
-                                <span>Agregar</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fas fa-edit"></i>
-                                <span>Actualizar</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fas fa-trash-alt"></i>
-                                <span>Eliminar</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </header>
-        <h1>Gestión de Personas</h1>
+    <nav>
+        <ul>
+            <li>
+                <!-- Cambiar el href a la ruta de login -->
+                <a href="{{ url_for('inicio') }}">
+                    <i class="fas fa-home"></i>
+                    <span>Inicio</span>
+                </a>
+                
+            </li>
+            <li>
+                <a href="{{ url_for('crear') }}">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Agregar</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-edit"></i>
+                    <span>Actualizar</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-trash-alt"></i>
+                    <span>Eliminar</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+        <h1>Gestion de trompones</h1>
         
         <h2>Lista de Personas</h2>
         <table>
