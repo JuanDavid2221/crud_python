@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizar Persona</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Actualizar Persona</h1>
+        <form action="{{ url_for('actualizar', id=persona[0]) }}" method="POST">
+            <input type="text" name="nombre" value="{{ persona[1] }}" required>
+            <input type="number" name="edad" value="{{ persona[2] }}" required>
+            <input type="email" name="correo" value="{{ persona[3] }}" required>
+            <button type="submit">Actualizar Persona</button>
+        </form>
+    </div>
+</body>
+</html>

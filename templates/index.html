@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"> <!-- Para iconos -->
+</head>
+<body>
+    <div class="container">
+        <h1>Gestión de Personas</h1>
+        
+        <h2>Lista de Personas</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Edad</th>
+                    <th>Correo</th>
+                    <th>Foto</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for persona in personas %}
+                <tr>
+                    <td>{{ persona[0] }}</td>
+                    <td>{{ persona[1] }}</td>
+                    <td>{{ persona[2] }}</td>
+                    <td>{{ persona[3] }}</td>
+                    <td>
+                        {% if persona[4] %}
+                        <img src="{{ persona[4] }}" alt="Foto" width="50">
+                        {% else %}
+                        No disponible
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ url_for('actualizar', id=persona[0]) }}">Editar</a>
+                        <a href="{{ url_for('eliminar', id=persona[0]) }}" onclick="return confirm('¿Estás seguro de que deseas eliminar?')">Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="agregar">
+        <h2>Agregar Persona</h2>
+        </div>
+        <form action="{{ url_for('crear') }}" method="POST" enctype="multipart/form-data">
+            <input type="text" name="nombre" placeholder="Nombre" required>
+            <input type="number" name="edad" placeholder="Edad" required>
+            <input type="email" name="correo" placeholder="Correo" required>
+            <input type="file" name="foto" id="foto" accept="image/*" onchange="previewImage(event)">
+            <button type="submit">Agregar Persona</button>
+        </form>
+        
+        <!-- Modal para vista previa de la imagen -->
+        <div id="modal" class="modal">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <img class="modal-content" id="img01">
+        </div>
+    </div>
+
+    <script>
+        // Función para mostrar la imagen seleccionada antes de enviar el formulario
+        function previewImage(event) {
+            var modal = document.getElementById("modal");
+            var modalImg = document.getElementById("img01");
+            var file = event.target.files[0];
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                modal.style.display = "block";
+                modalImg.src = e.target.result;
+            }
+
+            reader.readAsDataURL(file);
+        }
+
+        // Función para cerrar el modal
+        function closeModal() {
+            var modal = document.getElementById("modal");
+            modal.style.display = "none";
+        }
+    </script>
+</body>
+</html>
