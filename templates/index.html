@@ -9,6 +9,38 @@
 </head>
 <body>
     <div class="container">
+        <div class="wrapper">
+            <!-- Sidebar Lateral Fijo -->
+            <header class="sidebar">
+                <nav>
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-home"></i>
+                                <span>Inicio</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-plus-circle"></i>
+                                <span>Agregar</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-edit"></i>
+                                <span>Actualizar</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-trash-alt"></i>
+                                <span>Eliminar</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </header>
         <h1>Gestión de Personas</h1>
         
         <h2>Lista de Personas</h2>
@@ -52,9 +84,19 @@
             <input type="text" name="nombre" placeholder="Nombre" required>
             <input type="number" name="edad" placeholder="Edad" required>
             <input type="email" name="correo" placeholder="Correo" required>
-            <input type="file" name="foto" id="foto" accept="image/*" onchange="previewImage(event)">
+        
+            <!-- Campo para seleccionar la foto -->
+            <input type="file" name="foto" id="foto" accept="image/*" onchange="previewImage(event)" style="display: none;">
+        
+            <!-- Campo de texto donde se verá la imagen cuando se seleccione -->
+            <div id="image-container" class="image-container">
+                <input type="text" id="image-name" placeholder="Selecciona una foto" readonly style="cursor: pointer;" onclick="document.getElementById('foto').click();">
+                <div id="image-preview"></div> <!-- Aquí se visualizará la imagen -->
+            </div>
+        
             <button type="submit">Agregar Persona</button>
         </form>
+        
         
         <!-- Modal para vista previa de la imagen -->
         <div id="modal" class="modal">
