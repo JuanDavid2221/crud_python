@@ -9,12 +9,61 @@
 <body>
     <div class="container">
         <h1>Actualizar Persona</h1>
-        <form action="{{ url_for('actualizar', id=persona[0]) }}" method="POST">
-            <input type="text" name="nombre" value="{{ persona[1] }}" required>
-            <input type="number" name="edad" value="{{ persona[2] }}" required>
-            <input type="email" name="correo" value="{{ persona[3] }}" required>
-            <button type="submit">Actualizar Persona</button>
-        </form>
+
+        <!-- Card con los datos de la persona -->
+        <div class="card">
+            <!-- Mostrar la imagen si está disponible -->
+            <div class="image-container">
+                {% if persona[4] %}
+                    <img src="{{ persona[4] }}" alt="Foto de la persona" class="person-image">
+                {% else %}
+                    <p>No hay foto disponible</p>
+                {% endif %}
+            </div>
+            <div class="person-info">
+                <h2>{{ persona[1] }}</h2> <!-- Nombre -->
+                <p><strong>Edad:</strong> {{ persona[2] }}</p> <!-- Edad -->
+                <p><strong>Correo:</strong> {{ persona[3] }}</p> <!-- Correo -->
+            </div>
+        </div>
+
+        <!-- Formulario para actualizar los datos -->
+        <div class="card">
+            <form action="{{ url_for('actualizar', id=persona[0]) }}" method="POST" enctype="multipart/form-data">
+                <input type="text" name="nombre" value="{{ persona[1] }}" required>
+                <input type="number" name="edad" value="{{ persona[2] }}" required>
+                <input type="email" name="correo" value="{{ persona[3] }}" required>
+
+                <!-- Campo para seleccionar la foto -->
+                <input type="file" name="foto" id="foto" accept="image/*" onchange="previewImage(event)" style="display: none;">
+        
+                <!-- Campo de texto donde se verá la imagen cuando se seleccione -->
+                <div id="image-container" class="image-container">
+                    <input type="text" id="image-name" placeholder="Selecciona una foto" readonly style="cursor: pointer;" onclick="document.getElementById('foto').click();">
+                </div>
+                
+                <!-- Contenedor para mostrar la imagen previa -->
+                <div id="image-preview"></div>
+
+                <button type="submit">Actualizar Persona</button>
+            </form>
+        </div>
     </div>
+
+    <script>
+        // Función para mostrar la imagen seleccionada antes de enviar el formulario
+        function previewImage(event) {
+            var imagePreview = document.getElementById("image-preview");
+            var file = event.target.files[0];
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                imagePreview.style.display = "block"; // Mostrar contenedor de imagen previa
+                imagePreview.innerHTML = '<img src="' + e.target.result + '" alt="Vista previa" />';
+            }
+
+            reader.readAsDataURL(file);
+        }
+    </script>
 </body>
 </html>

@@ -31,8 +31,6 @@ def inicio():
 
     return render_template('inicio.html')  # Esto renderiza el archivo HTML de inicio
 
-
-
 @app.route('/crear', methods=['POST'])
 def crear():
     if request.method == 'POST':
@@ -69,7 +67,9 @@ def actualizar(id):
         actualizar_persona(id, nombre, edad, correo, foto_url)
         return redirect(url_for('index'))
     else:
-        persona = obtener_personas()
+        # Obtener solo la persona con el ID
+        personas = obtener_personas()
+        persona = next(p for p in personas if p[0] == id)  # Buscar la persona por ID
         return render_template('actualizar.html', persona=persona)
 
 @app.route('/eliminar/<int:id>')
@@ -79,6 +79,3 @@ def eliminar(id):
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-    
