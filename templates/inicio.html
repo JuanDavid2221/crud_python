@@ -21,7 +21,6 @@
 <nav>
     <ul>
         <li>
-            <!-- Cambiar el href a la ruta de login -->
             <a href="{{ url_for('inicio') }}">
                 <i class="fas fa-home"></i>
                 <span>Inicio</span>
@@ -29,9 +28,9 @@
             
         </li>
         <li>
-            <a href="{{ url_for('crear') }}">
+            <a href="{{ url_for('index') }}">
                 <i class="fas fa-plus-circle"></i>
-                <span>Agregar</span>
+                <span>Inventario</span>
             </a>
         </li>
         <li>
@@ -56,6 +55,24 @@
         <div class="trompa">
             <h1>Bienvenido a TrompiShop</h1>
             <p>Descubre productos unicos y reseñas autenticas de nuestros clientes trompones satisfechos</p>
+        </div>
+        <div class="botones">
+            <button class="tienda">Explora productos</button>
+            <a href="nosotros"> Conoce mas</a>
+        </div>
+        <div class="resultado">
+            <div class="re1">
+                <h1>30M</h1>
+                <p>Clientes Inspirados</p>
+            </div>
+            <div class="re1">
+                <h1>50K</h1>
+                <p>Productos Unicos</p>
+            </div>
+            <div class="re1">
+                <h1>30M+</h1>
+                <p>Reseñas de Clientes</p>
+            </div>
         </div>
     </section>
     <section class="carrusel">

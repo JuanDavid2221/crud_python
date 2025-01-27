@@ -1,42 +1,46 @@
 import mysql.connector
 from db import crear_conexion, cerrar_conexion
 
-def crear_persona(nombre, edad, correo, foto_url):
+# Crear un producto
+def crear_producto(nombre, descripcion, precio, cantidad_stock, foto_url):
     conexion = crear_conexion()
     if conexion:
         cursor = conexion.cursor()
         cursor.execute("""
-        INSERT INTO personas (nombre, edad, correo, foto)
-        VALUES (%s, %s, %s, %s)
-        """, (nombre, edad, correo, foto_url))
+        INSERT INTO productos (nombre, descripcion, precio, cantidad_stock, foto)
+        VALUES (%s, %s, %s, %s, %s)
+        """, (nombre, descripcion, precio, cantidad_stock, foto_url))
         conexion.commit()
         cerrar_conexion(conexion)
 
-def obtener_personas():
+# Obtener todos los productos
+def obtener_productos():
     conexion = crear_conexion()
     if conexion:
         cursor = conexion.cursor()
-        cursor.execute("SELECT * FROM personas")
-        personas = cursor.fetchall()
+        cursor.execute("SELECT * FROM productos")
+        productos = cursor.fetchall()
         cerrar_conexion(conexion)
-        return personas
+        return productos
 
-def actualizar_persona(id, nombre, edad, correo, foto_url):
+# Actualizar un producto
+def actualizar_producto(id, nombre, descripcion, precio, cantidad_stock, foto_url):
     conexion = crear_conexion()
     if conexion:
         cursor = conexion.cursor()
         cursor.execute("""
-        UPDATE personas
-        SET nombre = %s, edad = %s, correo = %s, foto = %s
+        UPDATE productos
+        SET nombre = %s, descripcion = %s, precio = %s, cantidad_stock = %s, foto = %s
         WHERE id = %s
-        """, (nombre, edad, correo, foto_url, id))
+        """, (nombre, descripcion, precio, cantidad_stock, foto_url, id))
         conexion.commit()
         cerrar_conexion(conexion)
 
-def eliminar_persona(id):
+# Eliminar un producto
+def eliminar_producto(id):
     conexion = crear_conexion()
     if conexion:
         cursor = conexion.cursor()
-        cursor.execute("DELETE FROM personas WHERE id = %s", (id,))
+        cursor.execute("DELETE FROM productos WHERE id = %s", (id,))
         conexion.commit()
         cerrar_conexion(conexion)

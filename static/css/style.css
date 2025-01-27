@@ -146,7 +146,7 @@ form input:focus, form button:focus {
 
 /* Efecto hover en los enlaces */
 .sidebar nav ul li a:hover {
-    color: #b49cd4; /* Color de los iconos al pasar el mouse */
+    color: #21ec95; /* Color de los iconos al pasar el mouse */
     transform: scale(1.1); /* Agranda el icono al pasar el ratón */
     width: 95%;
 }
@@ -211,7 +211,7 @@ p {
 }
 
 .close:hover, .close:focus {
-    color: #5e72e4;
+    color: #21ec95;
     background-color: transparent;
 }
 

@@ -75,7 +75,7 @@ main {
 /* Títulos y texto principal */
 h1 {
     color: #333;
-    font-size: 36px;
+    font-size: 90px;
 }
 
 p {
@@ -111,3 +111,84 @@ p {
 .carousel-control-prev, .carousel-control-next {
     filter: invert(1);  /* Cambia el color de los controles a blanco */
 }
+
+/* Estilo básico para la sección de botones */
+.botones {
+    gap: 20px; /* Espaciado entre los botones */
+    margin-top: 30px; /* Espaciado superior */
+}
+
+/* Estilo para el botón "Explora productos" */
+.botones .tienda {
+    border: 2px solid #000; /* Borde del enlace */
+    background-color: #21ec95; /* Fondo del botón */
+    color: black; /* Color del texto */
+    padding: 12px 25px; /* Espaciado dentro del botón */
+    border: none; /* Sin borde */
+    border-radius: 8px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor a mano */
+    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease; /* Transición suave */
+    text-decoration: none; /* Elimina el subrayado */
+}
+
+.botones .tienda:hover {
+    background-color: #000; /* Fondo más oscuro al pasar el mouse */
+    color: #fff;
+    border: solid 2px;
+    border-color: #000;
+    transform: translateY(-5px); /* Efecto de elevación al pasar el mouse */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada al hacer hover */
+}
+
+/* Estilo para el enlace "Conoce más" */
+.botones a {
+    color: #000; /* Color de texto */
+    font-size: 16px; /* Tamaño de la fuente */
+    text-decoration: none; /* Elimina el subrayado */
+    padding: 12px 20px; /* Espaciado dentro del enlace */
+    border-radius: 8px; /* Bordes redondeados */
+    border: 2px solid #000; /* Borde del enlace */
+    transition: transform 0.3s ease, color 0.3s ease, background-color 0.3s ease; /* Transición suave */
+}
+
+.botones a:hover {
+    color: #fff; /* Cambia el color del texto al pasar el mouse */
+    background-color: #000; /* Fondo del enlace al hacer hover */
+    transform: translateY(-5px); /* Efecto de elevación al pasar el mouse */
+}
+
+/* Para los enlaces dentro del botón, mantenemos el estilo dentro del botón */
+.botones .tienda a {
+    color: white; /* Color del texto dentro del botón */
+    text-decoration: none; /* Elimina el subrayado */
+}
+
+
+/* Efecto de escribir letra por letra */
+@keyframes escribir {
+    0% {
+        width: 0; /* Empieza con un ancho de 0 */
+    }
+    100% {
+        width: 100%; /* A medida que avanza la animación, el texto se muestra completamente */
+    }
+}
+
+.bienvenido .trompa h1 {
+    display: inline-block;
+    overflow: hidden; /* Oculta el texto que aún no ha aparecido */
+    white-space: nowrap; /* Impide que el texto se divida en varias líneas */
+    width: 0; /* Inicialmente el texto tiene un ancho de 0, por lo que está oculto */
+    opacity: 1; /* El texto no está oculto por opacidad, solo por el ancho */
+    animation: escribir 4s steps(40) 0s forwards; /* Inicia la animación de escritura */
+    font-size: 50px;
+    color: #000; /* Ajusta el color */
+
+}
+.resultado{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+}
+
+

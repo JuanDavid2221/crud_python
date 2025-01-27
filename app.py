@@ -1,8 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for
 import os
 from werkzeug.utils import secure_filename
-from crud import crear_persona, obtener_personas, actualizar_persona, eliminar_persona
+from crud import crear_producto, obtener_productos, actualizar_producto, eliminar_producto
 
+# Crear la instancia de Flask
 app = Flask(__name__)
 
 # Definir la carpeta donde se almacenarán las imágenes
@@ -14,30 +15,26 @@ app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
+@app.route('/inicio')
+def inicio():
+    return render_template('inicio.html')
+
+
+# Ruta principal
 @app.route('/')
 def index():
-    personas = obtener_personas()
-    return render_template('index.html', personas=personas)
+    productos = obtener_productos()  # Obtener productos
+    return render_template('index.html', productos=productos)
 
-@app.route('/inicio', methods=['GET', 'POST'])
-def inicio():
-    if request.method == 'POST':
-        usuario = request.form['usuario']
-        contraseña = request.form['contraseña']
-        if usuario == 'admin' and contraseña == '12345':  # Ejemplo de validación
-            return redirect(url_for('index'))  # Redirige a la página principal
-        else:
-            return "Usuario o contraseña incorrectos", 403  # Error si las credenciales son incorrectas
-
-    return render_template('inicio.html')  # Esto renderiza el archivo HTML de inicio
-
+# Rutas para crear, actualizar, eliminar productos...
 @app.route('/crear', methods=['POST'])
 def crear():
     if request.method == 'POST':
         nombre = request.form['nombre']
-        edad = int(request.form['edad'])
-        correo = request.form['correo']
-        
+        descripcion = request.form['descripcion']
+        precio = float(request.form['precio'])
+        cantidad = int(request.form['cantidad'])
+
         # Manejo de la imagen
         foto = request.files.get('foto')
         foto_url = ''
@@ -46,36 +43,35 @@ def crear():
             foto.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             foto_url = url_for('static', filename='uploads/' + filename)
 
-        crear_persona(nombre, edad, correo, foto_url)  # Pasamos la URL de la foto
+        crear_producto(nombre, descripcion, precio, cantidad, foto_url)  # Agregar el producto
         return redirect(url_for('index'))
 
 @app.route('/actualizar/<int:id>', methods=['GET', 'POST'])
 def actualizar(id):
     if request.method == 'POST':
         nombre = request.form['nombre']
-        edad = int(request.form['edad'])
-        correo = request.form['correo']
-
-        # Actualizar la imagen si se sube una nueva
+        descripcion = request.form['descripcion']
+        precio = float(request.form['precio'])
+        cantidad = int(request.form['cantidad'])
         foto = request.files.get('foto')
         foto_url = ''
         if foto and allowed_file(foto.filename):
             filename = secure_filename(foto.filename)
             foto.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             foto_url = url_for('static', filename='uploads/' + filename)
-        
-        actualizar_persona(id, nombre, edad, correo, foto_url)
+
+        actualizar_producto(id, nombre, descripcion, precio, cantidad, foto_url)
         return redirect(url_for('index'))
     else:
-        # Obtener solo la persona con el ID
-        personas = obtener_personas()
-        persona = next(p for p in personas if p[0] == id)  # Buscar la persona por ID
-        return render_template('actualizar.html', persona=persona)
+        productos = obtener_productos()
+        producto = next(p for p in productos if p[0] == id)
+        return render_template('actualizar.html', producto=producto)
 
 @app.route('/eliminar/<int:id>')
 def eliminar(id):
-    eliminar_persona(id)
+    eliminar_producto(id)
     return redirect(url_for('index'))
 
+# Iniciar la aplicación Flask
 if __name__ == '__main__':
     app.run(debug=True)
