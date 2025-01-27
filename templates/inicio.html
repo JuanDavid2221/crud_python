@@ -7,100 +7,101 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/inicio.css') }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"> <!-- Para iconos -->
     <!-- Bootstrap CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<!-- Bootstrap JS y Popper (necesarios para el carrusel) -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
-    
+    <!-- Bootstrap JS y Popper (necesarios para el carrusel) -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
 </head>
 <body>
+    <div class="boton">
+        <button class="tienda">Iniciar Sesion</button>
+        <!-- Aquí cambié el enlace de 'nosotros' a 'registro.html' -->
+        <a href="{{ url_for('registro') }}">Registro</a>
+    </div>
     <div class="wrapper">
         <!-- Sidebar Lateral Fijo -->
         <header class="sidebar">
-<nav>
-    <ul>
-        <li>
-            <a href="{{ url_for('inicio') }}">
-                <i class="fas fa-home"></i>
-                <span>Inicio</span>
-            </a>
-            
-        </li>
-        <li>
-            <a href="{{ url_for('index') }}">
-                <i class="fas fa-plus-circle"></i>
-                <span>Inventario</span>
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <i class="fas fa-edit"></i>
-                <span>Actualizar</span>
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <i class="fas fa-trash-alt"></i>
-                <span>Eliminar</span>
-            </a>
-        </li>
-    </ul>
-</nav>
-</header>
+            <nav>
+                <ul>
+                    <li>
+                        <a href="{{ url_for('inicio') }}">
+                            <i class="fas fa-home"></i>
+                            <span>Inicio</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('index') }}">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>Inventario</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-edit"></i>
+                            <span>Actualizar</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-trash-alt"></i>
+                            <span>Eliminar</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
 
-    <section class="init">
+        <section class="init">
 
-        <section class="bienvenido">
-        <div class="trompa">
-            <h1>Bienvenido a TrompiShop</h1>
-            <p>Descubre productos unicos y reseñas autenticas de nuestros clientes trompones satisfechos</p>
-        </div>
-        <div class="botones">
-            <button class="tienda">Explora productos</button>
-            <a href="nosotros"> Conoce mas</a>
-        </div>
-        <div class="resultado">
-            <div class="re1">
-                <h1>30M</h1>
-                <p>Clientes Inspirados</p>
-            </div>
-            <div class="re1">
-                <h1>50K</h1>
-                <p>Productos Unicos</p>
-            </div>
-            <div class="re1">
-                <h1>30M+</h1>
-                <p>Reseñas de Clientes</p>
-            </div>
-        </div>
-    </section>
-    <section class="carrusel">
-        <div id="carouselExample" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000"> <!-- 3000ms = 3 segundos -->
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="../static/uploads/luna.jpg" class="d-block w-100" alt="Imagen 1">
+            <section class="bienvenido">
+                <div class="trompa">
+                    <h1>Bienvenido a TrompiShop</h1>
+                    <p>Descubre productos unicos y reseñas autenticas de nuestros clientes trompones satisfechos</p>
                 </div>
-                <div class="carousel-item">
-                    <img src="../static/uploads/montana.jpg" class="d-block w-100" alt="Imagen 2">
+                <div class="botones">
+                    <button class="tienda">Explora productos</button>
+                    <a href="nosotros"> Conoce mas</a>
                 </div>
-                <div class="carousel-item">
-                    <img src="../static/uploads/morado.jpg" class="d-block w-100" alt="Imagen 3">
+                <div class="resultado">
+                    <div class="re1">
+                        <h1>30M</h1>
+                        <p>Clientes Inspirados</p>
+                    </div>
+                    <div class="re1">
+                        <h1>50K</h1>
+                        <p>Productos Unicos</p>
+                    </div>
+                    <div class="re1">
+                        <h1>30M+</h1>
+                        <p>Reseñas de Clientes</p>
+                    </div>
                 </div>
-            </div>
-            <!-- Si no deseas los botones para cambiar las imágenes manualmente, puedes eliminarlos -->
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-    </section>
-    
-    
-    </section>
+            </section>
+
+            <section class="carrusel">
+                <div id="carouselExample" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000"> <!-- 3000ms = 3 segundos -->
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="../static/uploads/luna.jpg" class="d-block w-100" alt="Imagen 1">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="../static/uploads/montana.jpg" class="d-block w-100" alt="Imagen 2">
+                        </div>
+                    </div>
+                    <!-- Si no deseas los botones para cambiar las imágenes manualmente, puedes eliminarlos -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </section>
+
+        </section>
+    </div>
 </body>
 </html>

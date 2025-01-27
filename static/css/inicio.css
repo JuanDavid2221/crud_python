@@ -86,7 +86,6 @@ p {
 .init {
     width: 80%;
     margin-left: 220px; /* Deja espacio para el sidebar fijo */
-    padding-top: 50px; /* Ajusta el espacio superior para que no se solape con el sidebar */
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -189,6 +188,59 @@ p {
     display: flex;
     justify-content: space-between;
     margin-top: 50px;
+}
+
+.boton {
+    gap: 20px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: end;
+    margin-right: 20px;
+}
+
+/* Estilo para el botón "Explora productos" */
+.boton .tienda {
+    border: 2px solid #000; /* Borde del enlace */
+    background-color: #21ec95; /* Fondo del botón */
+    color: black; /* Color del texto */
+    padding: 12px 25px; /* Espaciado dentro del botón */
+    border: none; /* Sin borde */
+    border-radius: 8px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor a mano */
+    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease; /* Transición suave */
+    text-decoration: none; /* Elimina el subrayado */
+}
+
+.boton .tienda:hover {
+    background-color: #000; /* Fondo más oscuro al pasar el mouse */
+    color: #fff;
+    border: solid 2px;
+    border-color: #000;
+    transform: translateY(-5px); /* Efecto de elevación al pasar el mouse */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada al hacer hover */
+}
+
+/* Estilo para el enlace "Conoce más" */
+.boton a {
+    color: #000; /* Color de texto */
+    font-size: 16px; /* Tamaño de la fuente */
+    text-decoration: none; /* Elimina el subrayado */
+    padding: 12px 20px; /* Espaciado dentro del enlace */
+    border-radius: 8px; /* Bordes redondeados */
+    border: 2px solid #000; /* Borde del enlace */
+    transition: transform 0.3s ease, color 0.3s ease, background-color 0.3s ease; /* Transición suave */
+}
+
+.boton a:hover {
+    color: #fff; /* Cambia el color del texto al pasar el mouse */
+    background-color: #000; /* Fondo del enlace al hacer hover */
+    transform: translateY(-5px); /* Efecto de elevación al pasar el mouse */
+}
+
+/* Para los enlaces dentro del botón, mantenemos el estilo dentro del botón */
+.boton .tienda a {
+    color: white; /* Color del texto dentro del botón */
+    text-decoration: none; /* Elimina el subrayado */
 }
 
 

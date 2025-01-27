@@ -19,6 +19,9 @@ def allowed_file(filename):
 def inicio():
     return render_template('inicio.html')
 
+@app.route('/registro')
+def registro():
+    return render_template('registro.html')
 
 # Ruta principal
 @app.route('/')
