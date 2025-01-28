@@ -1,0 +1,165 @@
+/* Reset de estilos */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Fondo y tipografía global */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Arial', sans-serif;
+    background-color: #000; /* Fondo negro */
+    color: white;
+    margin: 0;
+}
+
+/* Contenedor principal con imagen y formulario */
+.main-container {
+    display: flex;
+    width: 100%;
+    height: 100vh; /* Toma toda la altura de la pantalla */
+}
+
+/* Contenedor de la imagen (50% de ancho, 100% de alto) */
+.image-container {
+    width: 50%;
+    height: 100%; /* Imagen ocupa toda la altura */
+    overflow: hidden; /* Evita desbordamiento de imagen */
+}
+
+.image-container .image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Asegura que la imagen cubra el área */
+    filter: grayscale(100%); /* Imagen en blanco y negro */
+}
+
+/* Contenedor del formulario (50% de ancho, 100% de alto) */
+.form-container {
+    width: 50%;
+    height: 100%;
+    padding: 40px;
+    background-color: #fff;
+    color: #333; /* Texto en gris oscuro */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Caja del formulario */
+.form-box {
+    width: 100%;
+    max-width: 400px;
+    background: rgba(255, 255, 255, 0.9); /* Fondo blanco con opacidad */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Título principal */
+/* Efecto de escribir letra por letra */
+@keyframes escribir {
+    0% {
+        width: 0; /* Empieza con un ancho de 0 */
+    }
+    100% {
+        width: 100%; /* A medida que avanza la animación, el texto se muestra completamente */
+    }
+}
+
+.bienvenido {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    height: 10vh; /* Ocupa toda la altura de la ventana */
+}
+
+h1.escribiendo {
+    display: inline-block;
+    overflow: hidden; /* Oculta el texto que aún no ha aparecido */
+    white-space: nowrap; /* Impide que el texto se divida en varias líneas */
+    width: 0; /* Inicialmente el texto tiene un ancho de 0, por lo que está oculto */
+    opacity: 1; /* El texto no está oculto por opacidad, solo por el ancho */
+    animation: escribir 4s steps(30) 0s forwards; /* Inicia la animación de escritura */
+    font-size: 2.5rem;
+    color: #333;
+    font-weight: bold;
+    text-align: center;
+    position: relative;
+}
+
+/* Subtítulo */
+p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    color: #666;
+}
+
+/* Estilo de los campos de entrada */
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.1rem;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    background-color: #fff;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+/* Efecto al hacer foco en los campos */
+.input-group input:focus {
+    border-color: #333;
+    background-color: #f9f9f9;
+    outline: none;
+}
+
+/* Botón de envío */
+button {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.2rem;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out, background-color 0.3s;
+}
+
+/* Efecto al pasar el cursor sobre el botón */
+button:hover {
+    background-color: #555; /* Cambia a gris más claro */
+    transform: scale(1.05);
+}
+
+/* Efecto cuando se hace clic */
+button:active {
+    transform: scale(0.98);
+}
+
+/* Responsividad para pantallas pequeñas */
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: column; /* Cambia a una columna en pantallas pequeñas */
+        height: auto;
+    }
+
+    .image-container,
+    .form-container {
+        width: 100%;
+    }
+
+    .form-box {
+        padding: 20px;
+        width: 90%;
+    }
+}

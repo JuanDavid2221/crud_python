@@ -1,35 +1,52 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario de Registro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/registro.css') }}">
 </head>
 <body>
-    <h1>Formulario de Registro</h1>
-    <form action="#" method="POST">
-        <label for="nombre">Nombre Completo:</label>
-        <input type="text" id="nombre" name="nombre" required><br><br>
+    <div class="main-container">
+        <!-- Imagen a la izquierda (50% de ancho, 100% de alto) -->
+        <div class="image-container">
+            <img src="../static/uploads/login.png" alt="Imagen Representativa" class="image">
+        </div>
 
-        <label for="correo">Correo Electrónico:</label>
-        <input type="email" id="correo" name="correo" required><br><br>
-
-        <label for="usuario">Nombre de Usuario:</label>
-        <input type="text" id="usuario" name="usuario" required><br><br>
-
-        <label for="contraseña">Contraseña:</label>
-        <input type="password" id="contraseña" name="contraseña" required><br><br>
-
-        <label for="confirmar-contraseña">Confirmar Contraseña:</label>
-        <input type="password" id="confirmar-contraseña" name="confirmar-contraseña" required><br><br>
-
-        <label for="fecha-nacimiento">Fecha de Nacimiento:</label>
-        <input type="date" id="fecha-nacimiento" name="fecha-nacimiento" required><br><br>
-
-        <label for="telefono">Teléfono:</label>
-        <input type="tel" id="telefono" name="telefono"><br><br>
-
-        <input type="submit" value="Registrar">
-    </form>
+        <!-- Formulario a la derecha (50% de ancho) -->
+        <div class="form-container">
+            <div class="form-box">
+                <div class="bienvenido">
+                    <h1 class="escribiendo">¡Bienvenido!</h1>
+            </div>
+                <p>Únete a nuestra comunidad con estilo.</p>
+                <form action="#" method="POST">
+                    <div class="input-group">
+                        <input type="text" id="nombre" name="nombre" placeholder="Nombre Completo" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="email" id="correo" name="correo" placeholder="Correo Electrónico" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="usuario" name="usuario" placeholder="Nombre de Usuario" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="contraseña" name="contraseña" placeholder="Contraseña" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="confirmar-contraseña" name="confirmar-contraseña" placeholder="Confirmar Contraseña" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="date" id="fecha-nacimiento" name="fecha-nacimiento" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="tel" id="telefono" name="telefono" placeholder="Teléfono (opcional)">
+                    </div>
+                    <button type="submit">Registrar</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
