@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,19 +8,16 @@
 </head>
 <body>
     <div class="main-container">
-        <!-- Imagen a la izquierda (50% de ancho, 100% de alto) -->
         <div class="image-container">
-            <img src="../static/uploads/login.png" alt="Imagen Representativa" class="image">
+            <img src="{{ url_for('static', filename='uploads/login.png') }}" alt="Imagen Representativa" class="image">
         </div>
-
-        <!-- Formulario a la derecha (50% de ancho) -->
         <div class="form-container">
             <div class="form-box">
                 <div class="bienvenido">
                     <h1 class="escribiendo">¡Bienvenido!</h1>
-            </div>
+                </div>
                 <p>Únete a nuestra comunidad con estilo.</p>
-                <form action="#" method="POST">
+                <form action="/registro" method="POST">
                     <div class="input-group">
                         <input type="text" id="nombre" name="nombre" placeholder="Nombre Completo" required>
                     </div>
@@ -43,6 +39,9 @@
                     <div class="input-group">
                         <input type="tel" id="telefono" name="telefono" placeholder="Teléfono (opcional)">
                     </div>
+                    {% if error %}
+                        <p style="color: red;">{{ error }}</p>
+                    {% endif %}
                     <button type="submit">Registrar</button>
                 </form>
             </div>

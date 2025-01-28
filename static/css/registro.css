@@ -163,3 +163,14 @@ button:active {
         width: 90%;
     }
 }
+
+/*CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    correo VARCHAR(255) NOT NULL UNIQUE,
+    usuario VARCHAR(255) NOT NULL UNIQUE,
+    contraseña VARCHAR(255) NOT NULL,
+    fecha_nacimiento DATE,
+    telefono VARCHAR(20)
+);
+*/
