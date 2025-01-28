@@ -1,1 +1,35 @@
-<h1>a</h1>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/registro.css') }}">
+</head>
+<body>
+    <div class="main-container">
+        <div class="image-container">
+            <img src="{{ url_for('static', filename='uploads/login.png') }}" alt="Imagen Representativa" class="image">
+        </div>
+        <div class="form-container">
+            <div class="form-box">
+                <div class="bienvenido">
+                    <h1 class="escribiendo">¡Iniciar Sesión!</h1>
+                </div> 
+                <form action="/sesion" method="POST">
+                    <div class="input-group">
+                        <input type="text" id="login" name="login" placeholder="Email o Nombre de Usuario" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="contraseña" name="contraseña" placeholder="Contraseña" required>
+                    </div>
+                    {% if error %}
+                        <p style="color: red;">{{ error }}</p>
+                    {% endif %}
+                    <button type="submit">Iniciar Sesión</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

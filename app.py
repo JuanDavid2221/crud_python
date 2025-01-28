@@ -1,3 +1,8 @@
+from flask import Flask, render_template, request, redirect, url_for, session
+import os
+import mysql.connector
+from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 from flask import Flask, render_template, request, redirect, url_for
 import os
 from werkzeug.utils import secure_filename
@@ -6,12 +11,13 @@ from crud import crear_producto, obtener_productos, actualizar_producto, elimina
 
 # Crear la instancia de Flask
 app = Flask(__name__)
+app.secret_key = 'tu_clave_secreta_aqui'  # Necesario para mantener sesiones en Flask
 
 # Configurar la conexión a la base de datos
 db = mysql.connector.connect(
-    host="localhost",  # Cambia esto según tu configuración
-    user="root",       # Tu usuario de MySQL
-    password="",  # Tu contraseña de MySQL
+    host="localhost",
+    user="root",  # Cambia esto si usas otro usuario de MySQL
+    password="",  # Cambia esto si tienes contraseña para MySQL
     database="crud_db"  # El nombre de tu base de datos
 )
 
@@ -26,25 +32,50 @@ app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
-# Función para registrar un nuevo usuario
-def registrar_usuario(nombre, correo, usuario, contraseña, fecha_nacimiento, telefono):
-    try:
-        # Inserta el nuevo usuario en la base de datos
-        query = """
-        INSERT INTO usuarios (nombre, correo, usuario, contraseña, fecha_nacimiento, telefono)
-        VALUES (%s, %s, %s, %s, %s, %s)
-        """
-        values = (nombre, correo, usuario, contraseña, fecha_nacimiento, telefono)
-        cursor.execute(query, values)
-        db.commit()  # Guardar los cambios en la base de datos
-    except mysql.connector.Error as err:
-        print(f"Error al registrar el usuario: {err}")
-        db.rollback()  # Deshacer si ocurre un error
+# Función para verificar usuario y contraseña
+def verificar_usuario(campo, valor, contraseña):
+    query = f"SELECT * FROM usuarios WHERE {campo} = %s"
+    cursor.execute(query, (valor,))
+    usuario = cursor.fetchone()
+    if usuario and check_password_hash(usuario[4], contraseña):  # Verifica la contraseña con hash
+        return usuario
+    return None
 
+# Ruta de inicio de sesión
+@app.route('/sesion', methods=['GET', 'POST'])
+def sesion():
+    if request.method == 'POST':
+        login = request.form['login']
+        contraseña = request.form['contraseña']
+
+        # Verifica si es correo o nombre de usuario
+        usuario = None
+        if '@' in login:
+            # Buscar por correo
+            usuario = verificar_usuario('correo', login, contraseña)
+        else:
+            # Buscar por nombre de usuario
+            usuario = verificar_usuario('usuario', login, contraseña)
+
+        if usuario:
+            # Si el usuario existe y la contraseña es correcta, inicia sesión
+            session['usuario_id'] = usuario[0]  # Guardamos el id del usuario en la sesión
+            session['nombre_usuario'] = usuario[2]  # Guardamos el nombre de usuario
+            return redirect(url_for('inicio'))  # Redirigir a la página de inicio
+        else:
+            # Si no se encuentra el usuario o la contraseña es incorrecta
+            return render_template('sesion.html', error="Usuario o contraseña incorrectos.")
+    
+    return render_template('sesion.html')
+
+# Ruta de inicio
 @app.route('/inicio')
 def inicio():
+    if 'usuario_id' not in session:
+        return redirect(url_for('sesion'))  # Si no hay sesión, redirige al login
     return render_template('inicio.html')
 
+# Ruta de registro
 @app.route('/registro', methods=['GET', 'POST'])
 def registro():
     if request.method == 'POST':
@@ -60,13 +91,32 @@ def registro():
         if contraseña != confirmar_contraseña:
             return render_template('registro.html', error="Las contraseñas no coinciden.")
 
+        # Encriptar la contraseña
+        contraseña_hash = generate_password_hash(contraseña)
+
         # Registrar el usuario
-        registrar_usuario(nombre, correo, usuario, contraseña, fecha_nacimiento, telefono)
-        
-        # Redirigir al inicio después de un registro exitoso
-        return redirect(url_for('inicio'))
+        try:
+            query = """
+            INSERT INTO usuarios (nombre, correo, usuario, contraseña, fecha_nacimiento, telefono)
+            VALUES (%s, %s, %s, %s, %s, %s)
+            """
+            values = (nombre, correo, usuario, contraseña_hash, fecha_nacimiento, telefono)
+            cursor.execute(query, values)
+            db.commit()  # Guardar los cambios en la base de datos
+        except mysql.connector.Error as err:
+            print(f"Error al registrar el usuario: {err}")
+            db.rollback()  # Deshacer si ocurre un error
+
+        return redirect(url_for('inicio'))  # Redirigir al inicio después de un registro exitoso
 
     return render_template('registro.html')
+
+# Ruta de logout
+@app.route('/logout')
+def logout():
+    session.pop('usuario_id', None)  # Elimina el usuario de la sesión
+    session.pop('nombre_usuario', None)
+    return redirect(url_for('sesion'))  # Redirige al login
 
 # Ruta principal
 @app.route('/')
