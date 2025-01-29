@@ -1,0 +1,118 @@
+/* Estilos generales del cuerpo */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilos para el encabezado */
+h1 {
+    text-align: center;
+    font-size: 2.5em;
+    color: #333;
+    margin-top: 20px;
+}
+
+/* Contenedor de productos */
+.productos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    margin: 0 10%;
+}
+
+/* Estilos para cada producto */
+.producto {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.producto:hover {
+    transform: translateY(-10px);
+}
+
+/* Imagen del producto */
+.producto img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Contenido del producto */
+.producto h3 {
+    font-size: 1.3em;
+    color: #333;
+    padding: 15px;
+    margin: 0;
+}
+
+.producto p {
+    font-size: 1em;
+    color: #666;
+    padding: 0 15px;
+    margin: 5px 0;
+}
+
+/* Precio del producto */
+.producto .precio {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #27ae60;
+    padding: 0 15px;
+    margin-bottom: 15px;
+}
+
+/* Enlace de añadir al carrito */
+.producto a {
+    display: inline-block;
+    background-color: #3498db;
+    color: #fff;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    margin: 0 15px 15px;
+    transition: background-color 0.3s ease;
+}
+
+.producto a:hover {
+    background-color: #2980b9;
+}
+
+/* Resaltar el texto de productos agotados */
+.producto.agotado {
+    opacity: 0.6;
+}
+
+.producto.agotado a {
+    background-color: #e74c3c;
+    cursor: not-allowed;
+}
+
+.producto.agotado a:hover {
+    background-color: #e74c3c;
+}
+
+/* Estilos para el pie de página */
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+footer a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}

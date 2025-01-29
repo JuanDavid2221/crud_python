@@ -1,0 +1,139 @@
+/* General */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: #f8f9fa;
+    padding: 20px;
+}
+
+h1, h2 {
+    color: #333;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.carrito-container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    color: #0056b3;
+}
+
+.productos {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.producto {
+    display: flex;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.producto-img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 20px;
+}
+
+.producto-info {
+    flex-grow: 1;
+}
+
+.producto-nombre {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.producto-descripcion {
+    font-size: 1rem;
+    color: #777;
+    margin-bottom: 10px;
+}
+
+.producto-precio {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.eliminar {
+    color: #ff4747;
+    font-size: 1.1rem;
+    text-decoration: none;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.eliminar:hover {
+    color: #ff0000;
+}
+
+.total-compra {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.total-compra h2 {
+    color: #e63946;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.boton-compra {
+    padding: 10px 30px;
+    background-color: #0056b3;
+    color: white;
+    font-size: 1.2rem;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.boton-compra:hover {
+    background-color: #00408d;
+}
+
+.boton-compra:active {
+    background-color: #003466;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .producto {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .producto-img {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 10px;
+    }
+
+    .producto-info {
+        text-align: center;
+    }
+}

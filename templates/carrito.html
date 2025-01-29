@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/carrito.css') }}">
+</head>
+<body>
+    <div class="carrito-container">
+        <h1>Carrito de Compras</h1>
+
+        {% if session.get('carrito') %}
+        <div class="productos">
+            {% for producto in session['carrito'] %}
+            <div class="producto">
+                <img class="producto-img" src="{{ producto['foto'] }}" alt="Imagen Producto">
+                <div class="producto-info">
+                    <h3 class="producto-nombre">{{ producto['nombre'] }}</h3>
+                    <p class="producto-descripcion">{{ producto['descripcion'] }}</p>
+                    <div class="producto-precio">
+                        <p>Cantidad: {{ producto['cantidad'] }}</p>
+                        <p>Precio unitario: <strong>${{ producto['precio'] }}</strong></p>
+                        <p>Total: <strong>${{ producto['cantidad'] * producto['precio'] }}</strong></p>
+                    </div>
+                    <!-- Botón para eliminar el producto del carrito -->
+                    <a class="eliminar" href="{{ url_for('eliminar_del_carrito', id_producto=producto['id']) }}">Eliminar</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="total-compra">
+            <h2>Total: ${{ total_compra }}</h2>
+            <a href="{{ url_for('realizar_compra') }}" class="boton-compra">Realizar Compra</a>
+        </div>
+
+        {% else %}
+        <p>El carrito está vacío.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

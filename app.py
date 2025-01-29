@@ -115,6 +115,94 @@ def logout():
     session.pop('nombre_usuario', None)
     return redirect(url_for('sesion'))  # Redirige al login
 
+# Ruta para mostrar los productos de la tienda
+@app.route('/tienda', methods=['GET'])
+def tienda():
+    productos = obtener_productos()  # Obtener productos desde la base de datos
+    return render_template('tienda.html', productos=productos)  # Mostrar la tienda con productos
+
+@app.route('/eliminar_del_carrito/<int:id_producto>', methods=['GET'])
+def eliminar_del_carrito(id_producto):
+    # Si el carrito existe en la sesión
+    if 'carrito' in session:
+        # Buscar el producto en el carrito
+        producto = next((item for item in session['carrito'] if item['id'] == id_producto), None)
+        
+        if producto:
+            # Eliminar el producto encontrado
+            session['carrito'].remove(producto)
+            # Podrías agregar un mensaje de éxito o flash para informar al usuario
+            # flash(f'El producto {producto["nombre"]} ha sido eliminado del carrito', 'success')
+        else:
+            # Si el producto no se encuentra en el carrito
+            # Podrías agregar un mensaje de error
+            # flash('El producto no está en el carrito.', 'error')
+            pass
+    
+    # Redirigir de vuelta al carrito
+    return redirect(url_for('carrito'))
+
+
+
+@app.route('/carrito', methods=['GET'])
+def carrito():
+    # Verifica si el carrito existe en la sesión
+    if 'carrito' in session:
+        total_compra = sum(float(item['cantidad']) * float(item['precio']) for item in session['carrito'])
+        return render_template('carrito.html', total_compra=total_compra)  # Mostrar la plantilla del carrito
+    else:
+        return redirect(url_for('tienda'))  # Si el carrito está vacío, redirigir a la tienda
+
+
+@app.route('/añadir_al_carrito/<int:id_producto>', methods=['POST'])
+def añadir_al_carrito(id_producto):
+    cantidad = int(request.form['cantidad'])  # Obtener la cantidad seleccionada por el usuario
+    
+    # Verificar si el carrito ya está en la sesión, si no lo está, crear uno vacío
+    if 'carrito' not in session:
+        session['carrito'] = []
+
+    # Buscar el producto en la base de datos
+    cursor.execute("SELECT * FROM productos WHERE id = %s", (id_producto,))
+    producto = cursor.fetchone()
+
+    if producto:
+        # Verificar si el producto ya está en el carrito
+        producto_en_carrito = next((item for item in session['carrito'] if item['id'] == id_producto), None)
+        
+        if producto_en_carrito:
+            # Si el producto ya está en el carrito, solo sumamos la cantidad
+            producto_en_carrito['cantidad'] += cantidad
+        else:
+            # Si el producto no está en el carrito, lo añadimos
+            producto_en_carrito = {
+                'id': producto[0],
+                'nombre': producto[1],
+                'descripcion': producto[2],
+                'precio': producto[3],
+                'foto': producto[5],
+                'cantidad': cantidad
+            }
+            session['carrito'].append(producto_en_carrito)
+
+    # Redirigir al carrito para ver los productos añadidos
+    return redirect(url_for('carrito'))  # Esto redirige correctamente al carrito
+
+
+@app.route('/realizar_compra', methods=['GET'])
+def realizar_compra():
+    if 'carrito' not in session or not session['carrito']:
+        return redirect(url_for('tienda'))  # Si el carrito está vacío, redirige a la tienda
+    
+    # Aquí podrías procesar la compra, por ejemplo, almacenarla en la base de datos o realizar el pago
+    # Por ahora, solo vamos a vaciar el carrito y mostrar un mensaje
+
+    session.pop('carrito', None)  # Limpiar el carrito después de la compra
+    
+    return render_template('compra_exitosa.html')  # Redirige a una página de éxito de compra
+
+
+
 # Ruta del inventario (Index)
 @app.route('/', methods=['GET'])
 def index():
