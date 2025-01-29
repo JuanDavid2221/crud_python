@@ -1,12 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, send_file
 import os
 import mysql.connector
+import pandas as pd
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
-from flask import Flask, render_template, request, redirect, url_for
-import os
-from werkzeug.utils import secure_filename
-import mysql.connector
 from crud import crear_producto, obtener_productos, actualizar_producto, eliminar_producto
 
 # Crear la instancia de Flask
@@ -68,12 +65,12 @@ def sesion():
     
     return render_template('sesion.html')
 
-# Ruta de inicio
+# Ruta principal (Inicio) - Mostrar "Inicio" y mostrar los botones adecuados
 @app.route('/inicio')
 def inicio():
     if 'usuario_id' not in session:
-        return redirect(url_for('sesion'))  # Si no hay sesión, redirige al login
-    return render_template('inicio.html')
+        return render_template('inicio.html', logged_in=False)  # Si no hay sesión, muestra los botones de login
+    return render_template('inicio.html', logged_in=True)  # Si hay sesión, muestra el nombre de usuario y el botón de logout
 
 # Ruta de registro
 @app.route('/registro', methods=['GET', 'POST'])
@@ -118,13 +115,16 @@ def logout():
     session.pop('nombre_usuario', None)
     return redirect(url_for('sesion'))  # Redirige al login
 
-# Ruta principal
-@app.route('/')
+# Ruta del inventario (Index)
+@app.route('/', methods=['GET'])
 def index():
-    productos = obtener_productos()  # Obtener productos
-    return render_template('index.html', productos=productos)
+    if 'usuario_id' not in session:
+        return redirect(url_for('inicio'))  # Si el usuario no está logueado, redirigir a sesión
 
-# Rutas para crear, actualizar, eliminar productos...
+    productos = obtener_productos()  # Obtener productos desde la base de datos
+    return render_template('index.html', productos=productos)  # Mostrar inventario
+
+# Ruta para crear productos (debe ser administrada por el usuario logueado)
 @app.route('/crear', methods=['POST'])
 def crear():
     if request.method == 'POST':
@@ -142,8 +142,9 @@ def crear():
             foto_url = url_for('static', filename='uploads/' + filename)
 
         crear_producto(nombre, descripcion, precio, cantidad, foto_url)  # Agregar el producto
-        return redirect(url_for('index'))
+        return redirect(url_for('index'))  # Redirigir al inventario después de crear
 
+# Ruta para actualizar productos
 @app.route('/actualizar/<int:id>', methods=['GET', 'POST'])
 def actualizar(id):
     if request.method == 'POST':
@@ -165,10 +166,25 @@ def actualizar(id):
         producto = next(p for p in productos if p[0] == id)
         return render_template('actualizar.html', producto=producto)
 
+# Ruta para eliminar productos
 @app.route('/eliminar/<int:id>')
 def eliminar(id):
     eliminar_producto(id)
     return redirect(url_for('index'))
+
+# Ruta para generar y descargar el reporte Excel
+@app.route('/generar_reporte', methods=['GET'])
+def generar_reporte():
+    productos = obtener_productos()  # Obtener productos desde la base de datos
+    # Crear DataFrame con pandas
+    df = pd.DataFrame(productos, columns=['ID', 'Nombre', 'Descripción', 'Precio', 'Cantidad en Stock', 'Foto'])
+    
+    # Guardar el archivo Excel
+    archivo = 'reporte_productos.xlsx'
+    df.to_excel(archivo, index=False, engine='openpyxl')
+
+    # Enviar el archivo como descarga
+    return send_file(archivo, as_attachment=True)
 
 # Iniciar la aplicación Flask
 if __name__ == '__main__':

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,10 +14,17 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
 </head>
 <body>
+
     <div class="boton">
-        <a href="{{ url_for('sesion') }}" class="tienda">Iniciar Sesion</a>
+    {% if logged_in %}
+        <p>Hola, {{ session['nombre_usuario'] }}!</p>
+        <a href="{{ url_for('logout') }}" >Cerrar sesión</a>
+    {% else %}
+         <a href="{{ url_for('sesion') }}" class="tienda">Iniciar Sesion</a>
         <a href="{{ url_for('registro') }}">Registro</a>
+    {% endif %}
     </div>
+
     <div class="wrapper">
         <!-- Sidebar Lateral Fijo -->
         <header class="sidebar">
@@ -52,15 +59,14 @@
         </header>
 
         <section class="init">
-
             <section class="bienvenido">
                 <div class="trompa">
                     <h1>Bienvenido a TrompiShop</h1>
-                    <p>Descubre productos unicos y reseñas autenticas de nuestros clientes trompones satisfechos</p>
+                    <p>Descubre productos únicos y reseñas auténticas de nuestros clientes trompones satisfechos</p>
                 </div>
                 <div class="botones">
                     <button class="tienda">Explora productos</button>
-                    <a href="nosotros"> Conoce mas</a>
+                    <a href="nosotros"> Conoce más</a>
                 </div>
                 <div class="resultado">
                     <div class="re1">
@@ -69,7 +75,7 @@
                     </div>
                     <div class="re1">
                         <h1>50K</h1>
-                        <p>Productos Unicos</p>
+                        <p>Productos Únicos</p>
                     </div>
                     <div class="re1">
                         <h1>30M+</h1>
@@ -88,7 +94,6 @@
                             <img src="../static/uploads/montana.jpg" class="d-block w-100" alt="Imagen 2">
                         </div>
                     </div>
-                    <!-- Si no deseas los botones para cambiar las imágenes manualmente, puedes eliminarlos -->
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Previous</span>
@@ -99,7 +104,6 @@
                     </button>
                 </div>
             </section>
-
         </section>
     </div>
 </body>
