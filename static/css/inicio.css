@@ -118,7 +118,7 @@ p {
 }
 
 /* Estilo para el botón "Explora productos" */
-.botones .tienda {
+.botones .explora-productos {
     border: 2px solid #000; /* Borde del enlace */
     background-color: #21ec95; /* Fondo del botón */
     color: black; /* Color del texto */
@@ -130,7 +130,8 @@ p {
     text-decoration: none; /* Elimina el subrayado */
 }
 
-.botones .tienda:hover {
+
+.botones .explora-productos:hover {
     background-color: #000; /* Fondo más oscuro al pasar el mouse */
     color: #fff;
     border: solid 2px;
@@ -157,11 +158,18 @@ p {
 }
 
 /* Para los enlaces dentro del botón, mantenemos el estilo dentro del botón */
-.botones .tienda a {
+.botones .explora-productos a {
     color: white; /* Color del texto dentro del botón */
     text-decoration: none; /* Elimina el subrayado */
 }
 
+button.explora-productos a.explora-productos {
+    display: block;
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    text-align: center;  /* Centra el texto */
+}
 
 /* Efecto de escribir letra por letra */
 @keyframes escribir {
@@ -199,7 +207,7 @@ p {
 }
 
 /* Estilo para el botón "Explora productos" */
-.boton .tienda {
+.boton .explora-productos {
     border: 2px solid #000; /* Borde del enlace */
     background-color: #21ec95; /* Fondo del botón */
     color: black; /* Color del texto */
@@ -211,7 +219,7 @@ p {
     text-decoration: none; /* Elimina el subrayado */
 }
 
-.boton .tienda:hover {
+.boton .explora-productos:hover {
     background-color: #000; /* Fondo más oscuro al pasar el mouse */
     color: #fff;
     border: solid 2px;
@@ -238,7 +246,7 @@ p {
 }
 
 /* Para los enlaces dentro del botón, mantenemos el estilo dentro del botón */
-.boton .tienda a {
+.boton .explora-productos a {
     color: white; /* Color del texto dentro del botón */
     text-decoration: none; /* Elimina el subrayado */
 }

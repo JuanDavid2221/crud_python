@@ -10,34 +10,49 @@
     <div class="carrito-container">
         <h1>Carrito de Compras</h1>
 
-        {% if session.get('carrito') %}
-        <div class="productos">
-            {% for producto in session['carrito'] %}
-            <div class="producto">
-                <img class="producto-img" src="{{ producto['foto'] }}" alt="Imagen Producto">
-                <div class="producto-info">
-                    <h3 class="producto-nombre">{{ producto['nombre'] }}</h3>
-                    <p class="producto-descripcion">{{ producto['descripcion'] }}</p>
-                    <div class="producto-precio">
-                        <p>Cantidad: {{ producto['cantidad'] }}</p>
-                        <p>Precio unitario: <strong>${{ producto['precio'] }}</strong></p>
-                        <p>Total: <strong>${{ producto['cantidad'] * producto['precio'] }}</strong></p>
-                    </div>
-                    <!-- Botón para eliminar el producto del carrito -->
-                    <a class="eliminar" href="{{ url_for('eliminar_del_carrito', id_producto=producto['id']) }}">Eliminar</a>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    <ul>
+                    {% for category, message in messages %}
+                        <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                    </ul>
                 </div>
-            </div>
-            {% endfor %}
-        </div>
+            {% endif %}
+        {% endwith %}
 
-        <div class="total-compra">
-            <h2>Total: ${{ total_compra }}</h2>
-            <a href="{{ url_for('realizar_compra') }}" class="boton-compra">Realizar Compra</a>
-        </div>
-
+        {% if session.get('carrito') %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Imagen</th>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Total</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for producto in session['carrito'] %}
+                <tr>
+                    <td><img class="producto-img" src="{{ producto['foto'] }}" alt="Imagen Producto"></td>
+                    <td class="producto-nombre">{{ producto['nombre'] }}</td>
+                    <td class="producto-cantidad">{{ producto['cantidad'] }}</td>
+                    <td class="producto-precio">${{ producto['precio'] }}</td>
+                    <td class="total">${{ producto['cantidad'] * producto['precio'] }}</td>
+                    <td><a class="eliminar" href="{{ url_for('eliminar_del_carrito', id_producto=producto['id']) }}">Eliminar</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
         {% else %}
         <p>El carrito está vacío.</p>
         {% endif %}
+
+        <!-- Botón para volver a la tienda -->
+        <a href="{{ url_for('tienda') }}" class="boton-volver">Volver a la tienda</a>
     </div>
 </body>
 </html>

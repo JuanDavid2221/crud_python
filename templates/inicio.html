@@ -16,14 +16,15 @@
 <body>
 
     <div class="boton">
-    {% if logged_in %}
-        <p>Hola, {{ session['nombre_usuario'] }}!</p>
-        <a href="{{ url_for('logout') }}" >Cerrar sesión</a>
-    {% else %}
-         <a href="{{ url_for('sesion') }}" class="tienda">Iniciar Sesion</a>
-        <a href="{{ url_for('registro') }}">Registro</a>
-    {% endif %}
+        {% if logged_in %}
+            <p>Hola, {{ session['nombre_usuario'] }}!</p>
+            <a href="{{ url_for('logout') }}" >Cerrar sesión</a>
+        {% else %}
+             <a href="{{ url_for('sesion') }}" class="tienda">Iniciar Sesion</a>
+            <a href="{{ url_for('registro') }}">Registro</a>
+        {% endif %}
     </div>
+    
 
     <div class="wrapper">
         <!-- Sidebar Lateral Fijo -->
@@ -36,12 +37,16 @@
                             <span>Inicio</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="{{ url_for('index') }}">
-                            <i class="fas fa-plus-circle"></i>
-                            <span>Inventario</span>
-                        </a>
-                    </li>
+                    {% if es_administrador %}
+    <li>
+        <a href="{{ url_for('index') }}">
+            <i class="fas fa-plus-circle"></i>
+            <span>Inventario</span>
+        </a>
+    </li>
+{% endif %}
+
+                
                     <li>
                         <a href="{{ url_for('tienda') }}"> <!-- Aquí se redirige a la página de tienda -->
                             <i class="fas fa-store"></i> <!-- Icono de tienda -->
@@ -65,7 +70,7 @@
                     <p>Descubre productos únicos y reseñas auténticas de nuestros clientes trompones satisfechos</p>
                 </div>
                 <div class="botones">
-                    <button class="tienda">Explora productos</button>
+                        <a href="{{ url_for('tienda') }}" class="explora-productos">Explora productos</a>                  
                     <a href="nosotros"> Conoce más</a>
                 </div>
                 <div class="resultado">

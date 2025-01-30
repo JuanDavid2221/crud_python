@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session, send_file
 import os
+from flask import flash
 import mysql.connector
 import pandas as pd
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -38,7 +39,6 @@ def verificar_usuario(campo, valor, contraseña):
         return usuario
     return None
 
-# Verificar si el usuario es administrador
 def es_administrador():
     if 'usuario_id' in session:
         usuario_id = session['usuario_id']
@@ -47,6 +47,8 @@ def es_administrador():
         rol = cursor.fetchone()
         return rol and rol[0] == 'admin'
     return False
+
+
 
 # Ruta de inicio de sesión
 @app.route('/sesion', methods=['GET', 'POST'])
@@ -75,12 +77,14 @@ def sesion():
     
     return render_template('sesion.html')
 
+
 # Ruta principal (Inicio) - Mostrar "Inicio" y mostrar los botones adecuados
 @app.route('/inicio')
 def inicio():
     if 'usuario_id' not in session:
-        return render_template('inicio.html', logged_in=False)  # Si no hay sesión, muestra los botones de login
-    return render_template('inicio.html', logged_in=True)  # Si hay sesión, muestra el nombre de usuario y el botón de logout
+        return render_template('inicio.html', logged_in=False, es_administrador=False)  # Si no hay sesión, muestra los botones de login
+    return render_template('inicio.html', logged_in=True, es_administrador=es_administrador())  # Pasar si el usuario es admin
+
 
 # Ruta de registro
 @app.route('/registro', methods=['GET', 'POST'])
@@ -142,16 +146,13 @@ def eliminar_del_carrito(id_producto):
         if producto:
             # Eliminar el producto encontrado
             session['carrito'].remove(producto)
-            # Podrías agregar un mensaje de éxito o flash para informar al usuario
-            # flash(f'El producto {producto["nombre"]} ha sido eliminado del carrito', 'success')
+            flash(f'El producto {producto["nombre"]} ha sido eliminado del carrito', 'success')
         else:
-            # Si el producto no se encuentra en el carrito
-            # Podrías agregar un mensaje de error
-            # flash('El producto no está en el carrito.', 'error')
-            pass
+            flash('El producto no está en el carrito.', 'error')
     
     # Redirigir de vuelta al carrito
     return redirect(url_for('carrito'))
+
 
 
 @app.route('/carrito', methods=['GET'])
@@ -171,6 +172,8 @@ def añadir_al_carrito(id_producto):
     # Verificar si el carrito ya está en la sesión, si no lo está, crear uno vacío
     if 'carrito' not in session:
         session['carrito'] = []
+    
+    print(f"Carrito antes de añadir: {session['carrito']}")  # Depuración: mostrar el carrito actual
 
     # Buscar el producto en la base de datos
     cursor.execute("SELECT * FROM productos WHERE id = %s", (id_producto,))
@@ -183,20 +186,28 @@ def añadir_al_carrito(id_producto):
         if producto_en_carrito:
             # Si el producto ya está en el carrito, solo sumamos la cantidad
             producto_en_carrito['cantidad'] += cantidad
+            print(f"Producto actualizado en el carrito: {producto_en_carrito}")  # Depuración
         else:
             # Si el producto no está en el carrito, lo añadimos
             producto_en_carrito = {
-                'id': producto[0],
-                'nombre': producto[1],
-                'descripcion': producto[2],
-                'precio': producto[3],
-                'foto': producto[5],
+                'id': producto[0],  # ID del producto
+                'nombre': producto[1],  # Nombre del producto
+                'descripcion': producto[2],  # Descripción
+                'precio': producto[3],  # Precio
+                'foto': producto[5],  # Foto
                 'cantidad': cantidad
             }
             session['carrito'].append(producto_en_carrito)
+            print(f"Producto añadido al carrito: {producto_en_carrito}")  # Depuración
+    
+    # Guardar el carrito en la sesión
+    session.modified = True
 
-    # Redirigir al carrito para ver los productos añadidos
-    return redirect(url_for('carrito'))  # Esto redirige correctamente al carrito
+    # Verificar el contenido final del carrito
+    print(f"Carrito después de añadir: {session['carrito']}")  # Depuración
+
+    # Redirigir al carrito
+    return redirect(url_for('carrito'))
 
 
 @app.route('/realizar_compra', methods=['GET'])
