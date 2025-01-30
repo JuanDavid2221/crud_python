@@ -38,6 +38,16 @@ def verificar_usuario(campo, valor, contraseña):
         return usuario
     return None
 
+# Verificar si el usuario es administrador
+def es_administrador():
+    if 'usuario_id' in session:
+        usuario_id = session['usuario_id']
+        query = "SELECT rol FROM usuarios WHERE id = %s"
+        cursor.execute(query, (usuario_id,))
+        rol = cursor.fetchone()
+        return rol and rol[0] == 'admin'
+    return False
+
 # Ruta de inicio de sesión
 @app.route('/sesion', methods=['GET', 'POST'])
 def sesion():
@@ -94,10 +104,11 @@ def registro():
         # Registrar el usuario
         try:
             query = """
-            INSERT INTO usuarios (nombre, correo, usuario, contraseña, fecha_nacimiento, telefono)
-            VALUES (%s, %s, %s, %s, %s, %s)
+            INSERT INTO usuarios (nombre, correo, usuario, contraseña, fecha_nacimiento, telefono, rol)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
             """
-            values = (nombre, correo, usuario, contraseña_hash, fecha_nacimiento, telefono)
+            # Asignar rol de 'user' al registrarse
+            values = (nombre, correo, usuario, contraseña_hash, fecha_nacimiento, telefono, 'user')
             cursor.execute(query, values)
             db.commit()  # Guardar los cambios en la base de datos
         except mysql.connector.Error as err:
@@ -141,7 +152,6 @@ def eliminar_del_carrito(id_producto):
     
     # Redirigir de vuelta al carrito
     return redirect(url_for('carrito'))
-
 
 
 @app.route('/carrito', methods=['GET'])
@@ -206,8 +216,8 @@ def realizar_compra():
 # Ruta del inventario (Index)
 @app.route('/', methods=['GET'])
 def index():
-    if 'usuario_id' not in session:
-        return redirect(url_for('inicio'))  # Si el usuario no está logueado, redirigir a sesión
+    if 'usuario_id' not in session or not es_administrador():
+        return redirect(url_for('inicio'))  # Si el usuario no es administrador, redirigir a inicio
 
     productos = obtener_productos()  # Obtener productos desde la base de datos
     return render_template('index.html', productos=productos)  # Mostrar inventario
@@ -215,64 +225,74 @@ def index():
 # Ruta para crear productos (debe ser administrada por el usuario logueado)
 @app.route('/crear', methods=['POST'])
 def crear():
-    if request.method == 'POST':
-        nombre = request.form['nombre']
-        descripcion = request.form['descripcion']
-        precio = float(request.form['precio'])
-        cantidad = int(request.form['cantidad'])
+    if es_administrador():
+        if request.method == 'POST':
+            nombre = request.form['nombre']
+            descripcion = request.form['descripcion']
+            precio = float(request.form['precio'])
+            cantidad = int(request.form['cantidad'])
 
-        # Manejo de la imagen
-        foto = request.files.get('foto')
-        foto_url = ''
-        if foto and allowed_file(foto.filename):
-            filename = secure_filename(foto.filename)
-            foto.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            foto_url = url_for('static', filename='uploads/' + filename)
+            # Manejo de la imagen
+            foto = request.files.get('foto')
+            foto_url = ''
+            if foto and allowed_file(foto.filename):
+                filename = secure_filename(foto.filename)
+                foto.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                foto_url = url_for('static', filename='uploads/' + filename)
 
-        crear_producto(nombre, descripcion, precio, cantidad, foto_url)  # Agregar el producto
-        return redirect(url_for('index'))  # Redirigir al inventario después de crear
+            crear_producto(nombre, descripcion, precio, cantidad, foto_url)  # Agregar el producto
+            return redirect(url_for('index'))  # Redirigir al inventario después de crear
+    else:
+        return redirect(url_for('inicio'))  # Si no es admin, redirigir a inicio
 
 # Ruta para actualizar productos
 @app.route('/actualizar/<int:id>', methods=['GET', 'POST'])
 def actualizar(id):
-    if request.method == 'POST':
-        nombre = request.form['nombre']
-        descripcion = request.form['descripcion']
-        precio = float(request.form['precio'])
-        cantidad = int(request.form['cantidad'])
-        foto = request.files.get('foto')
-        foto_url = ''
-        if foto and allowed_file(foto.filename):
-            filename = secure_filename(foto.filename)
-            foto.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            foto_url = url_for('static', filename='uploads/' + filename)
+    if es_administrador():
+        if request.method == 'POST':
+            nombre = request.form['nombre']
+            descripcion = request.form['descripcion']
+            precio = float(request.form['precio'])
+            cantidad = int(request.form['cantidad'])
+            foto = request.files.get('foto')
+            foto_url = ''
+            if foto and allowed_file(foto.filename):
+                filename = secure_filename(foto.filename)
+                foto.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                foto_url = url_for('static', filename='uploads/' + filename)
 
-        actualizar_producto(id, nombre, descripcion, precio, cantidad, foto_url)
-        return redirect(url_for('index'))
+            actualizar_producto(id, nombre, descripcion, precio, cantidad, foto_url)
+            return redirect(url_for('index'))
+        else:
+            productos = obtener_productos()
+            producto = next(p for p in productos if p[0] == id)
+            return render_template('actualizar.html', producto=producto)
     else:
-        productos = obtener_productos()
-        producto = next(p for p in productos if p[0] == id)
-        return render_template('actualizar.html', producto=producto)
+        return redirect(url_for('inicio'))  # Si no es admin, redirigir a inicio
 
 # Ruta para eliminar productos
 @app.route('/eliminar/<int:id>')
 def eliminar(id):
-    eliminar_producto(id)
+    if es_administrador():
+        eliminar_producto(id)
     return redirect(url_for('index'))
 
 # Ruta para generar y descargar el reporte Excel
 @app.route('/generar_reporte', methods=['GET'])
 def generar_reporte():
-    productos = obtener_productos()  # Obtener productos desde la base de datos
-    # Crear DataFrame con pandas
-    df = pd.DataFrame(productos, columns=['ID', 'Nombre', 'Descripción', 'Precio', 'Cantidad en Stock', 'Foto'])
-    
-    # Guardar el archivo Excel
-    archivo = 'reporte_productos.xlsx'
-    df.to_excel(archivo, index=False, engine='openpyxl')
+    if es_administrador():
+        productos = obtener_productos()  # Obtener productos desde la base de datos
+        # Crear DataFrame con pandas
+        df = pd.DataFrame(productos, columns=['ID', 'Nombre', 'Descripción', 'Precio', 'Cantidad en Stock', 'Foto'])
 
-    # Enviar el archivo como descarga
-    return send_file(archivo, as_attachment=True)
+        # Guardar el archivo Excel
+        archivo = 'reporte_productos.xlsx'
+        df.to_excel(archivo, index=False, engine='openpyxl')
+
+        # Enviar el archivo como descarga
+        return send_file(archivo, as_attachment=True)
+    else:
+        return redirect(url_for('inicio'))  # Si no es admin, redirigir a inicio
 
 # Iniciar la aplicación Flask
 if __name__ == '__main__':

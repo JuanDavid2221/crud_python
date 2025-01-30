@@ -1,35 +1,61 @@
 /* Estilos generales del cuerpo */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f4f4f9;
+    background-color: #fff;  /* Fondo blanco */
+    color: #333;  /* Color de texto oscuro para mejor legibilidad */
     margin: 0;
     padding: 0;
 }
 
-/* Estilos para el encabezado */
-h1 {
+/* Encabezado */
+header {
+    background-color: #111;
+    padding: 20px 0;
     text-align: center;
-    font-size: 2.5em;
-    color: #333;
-    margin-top: 20px;
 }
+
+h1 {
+    font-size: 3.5em;  /* Aumentamos el tamaño para hacerlo más impactante */
+    color: #111;  /* Un color oscuro para darle más elegancia */
+    font-family: 'Helvetica Neue', sans-serif;  /* Fuente moderna y elegante */
+    font-weight: bold;  /* Hacemos que el texto sea más fuerte */
+    letter-spacing: 3px;  /* Espaciado entre letras para darle amplitud */
+    text-transform: uppercase;  /* Convertimos el texto a mayúsculas */
+    text-align: center;  /* Centramos el texto */
+    margin: 40px 0;  /* Añadimos un buen margen alrededor */
+    padding: 10px 0;  /* Un poco de espacio alrededor del título */
+    background: linear-gradient(to right, #3498db, #2ecc71);  /* Degradado de colores llamativos */
+    -webkit-background-clip: text;  /* Clip de fondo para que el degradado se aplique solo al texto */
+    color: transparent;  /* Hacemos el color original transparente para mostrar el degradado */
+}
+
+/* Sombra sutil para el texto */
+h1 {
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);  /* Sombra suave para dar un efecto de profundidad */
+}
+
 
 /* Contenedor de productos */
 .productos {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 20px;
-    margin: 0 10%;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    padding: 40px 5%;
+    box-sizing: border-box;
 }
 
 /* Estilos para cada producto */
 .producto {
     background-color: #fff;
-    border-radius: 8px;
+    border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    text-align: center;
 }
 
 .producto:hover {
@@ -39,23 +65,28 @@ h1 {
 /* Imagen del producto */
 .producto img {
     width: 100%;
-    height: 200px;
+    height: 250px;
     object-fit: cover;
-    border-bottom: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 15px;
 }
 
-/* Contenido del producto */
+/* Información del producto */
+.info {
+    padding: 10px;
+    width: 100%;
+}
+
 .producto h3 {
-    font-size: 1.3em;
+    font-size: 1.5em;
     color: #333;
-    padding: 15px;
-    margin: 0;
+    margin: 10px 0;
+    font-weight: bold;
 }
 
 .producto p {
     font-size: 1em;
-    color: #666;
-    padding: 0 15px;
+    color: #777;
     margin: 5px 0;
 }
 
@@ -63,45 +94,74 @@ h1 {
 .producto .precio {
     font-size: 1.2em;
     font-weight: bold;
-    color: #27ae60;
-    padding: 0 15px;
-    margin-bottom: 15px;
+    color: #e74c3c;  /* Rojo elegante para el precio */
+    margin: 10px 0;
 }
 
-/* Enlace de añadir al carrito */
-.producto a {
-    display: inline-block;
-    background-color: #3498db;
+/* Campo de cantidad */
+.producto input {
+    width: 50px;
+    padding: 5px;
+    margin: 10px 0;
+    font-size: 1em;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: border-color 0.3s ease;
+}
+
+/* Estilos para los botones de la cantidad */
+.producto input[type="number"]::-webkit-outer-spin-button,
+.producto input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.producto input:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+/* Botón de añadir al carrito */
+.producto button {
+    background-color: #21ec95;
     color: #fff;
     padding: 10px 20px;
     text-align: center;
     text-decoration: none;
     border-radius: 5px;
-    margin: 0 15px 15px;
-    transition: background-color 0.3s ease;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    font-size: 1em;
+    width: 100%;
+    margin-top: 10px;
 }
 
-.producto a:hover {
-    background-color: #2980b9;
+.producto button:hover {
+    background-color: #000;
+    color: #fff;
+    transform: scale(1.05);
 }
 
-/* Resaltar el texto de productos agotados */
+/* Estilo para productos agotados */
 .producto.agotado {
-    opacity: 0.6;
+    opacity: 0.5;
+    pointer-events: none;
 }
 
-.producto.agotado a {
+.producto.agotado button {
     background-color: #e74c3c;
     cursor: not-allowed;
 }
 
-.producto.agotado a:hover {
+.producto.agotado button:hover {
     background-color: #e74c3c;
 }
 
-/* Estilos para el pie de página */
+/* Footer */
 footer {
-    background-color: #333;
+    background-color: #111;
     color: #fff;
     padding: 20px;
     text-align: center;
